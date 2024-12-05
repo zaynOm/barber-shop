@@ -15,7 +15,10 @@ import {
 import { barbers } from "@/data/barbers";
 import { services } from "@/data/services";
 import { timeSlots } from "@/data/time-slots";
+import { formatAppointmentDate } from "@/lib/utils";
+import { redirect } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { toast } from "sonner";
 
 export default function Page() {
   const [fullname, setFullname] = useState("");
@@ -24,6 +27,26 @@ export default function Page() {
   const [barber, setBarber] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
 
+  async function onFormSubmit(e: FormEvent) {
+    e.preventDefault();
+    const res = await fetch("/api/appointments", {
+      method: "POST",
+      body: JSON.stringify({
+        fullname,
+        serviceName: service,
+        barberName: barber,
+        date,
+        time: selectedTime,
+      }),
+    });
+
+    if (res.ok) {
+      toast("Appointment was created successfuly", {
+        description: `${formatAppointmentDate(date || new Date())} at ${selectedTime}`,
+      });
+    }
+    redirect("/bookings");
+  }
 
   return (
     <div className="py-24">
@@ -36,6 +59,7 @@ export default function Page() {
         </div>
 
         <form
+          onSubmit={onFormSubmit}
           className="flex flex-col gap-6 items-center"
         >
           <div>
