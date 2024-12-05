@@ -2,6 +2,19 @@ import dbConnect from "@/lib/db";
 import Appointment from "@/lib/schemas";
 import { NextRequest, NextResponse } from "next/server";
 
+export async function GET(_req: NextRequest) {
+  try {
+    await dbConnect();
+    const appointments = await Appointment.find({});
+    return NextResponse.json({ data: appointments, status: 200 });
+  } catch (_) {
+    return NextResponse.json({
+      error: "Failed to fetch appointments",
+      status: 500,
+    });
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     await dbConnect();
