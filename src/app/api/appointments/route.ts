@@ -2,7 +2,7 @@ import dbConnect from "@/lib/db";
 import Appointment from "@/lib/schemas";
 import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = "nodejs";
+// export const runtime = "nodejs";
 
 export async function GET(_req: NextRequest) {
   try {
