@@ -22,7 +22,7 @@ export default function Navbar() {
         </ul>
       </div>
       <div className="space-x-4">
-        <Link href="/bookings">
+        <Link href="/bookings" className="hidden md:inline">
           <Button size="lg" variant="outline">
             Bookings list
           </Button>
