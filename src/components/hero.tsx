@@ -26,7 +26,12 @@ export function Hero() {
             atmosphere. Book your appointment today and let our expert barbers
             take care of you.
           </p>
-          <div className="mt-10">
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/bookings">
+              <Button size="lg" variant="outline">
+                Bookings list
+              </Button>
+            </Link>
             <Link href="/bookings/new">
               <Button size="lg" variant="secondary">
                 Book Now
