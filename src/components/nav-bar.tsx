@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { Button } from "./ui/button";
 
 export default function Navbar() {
@@ -22,7 +21,12 @@ export default function Navbar() {
           </li>
         </ul>
       </div>
-      <div>
+      <div className="space-x-4">
+        <Link href="/bookings">
+          <Button size="lg" variant="outline">
+            Bookings list
+          </Button>
+        </Link>
         <Link href="/bookings/new">
           <Button size="lg">Book now</Button>
         </Link>
