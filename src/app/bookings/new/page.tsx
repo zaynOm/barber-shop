@@ -19,6 +19,7 @@ import { formatAppointmentDate } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
+import { createAppointment } from "./actions";
 
 export default function Page() {
   const [fullname, setFullname] = useState("");
@@ -29,20 +30,19 @@ export default function Page() {
 
   async function onFormSubmit(e: FormEvent) {
     e.preventDefault();
-    const res = await fetch("/api/appointments", {
-      method: "POST",
-      body: JSON.stringify({
-        fullname,
-        serviceName: service,
-        barberName: barber,
-        date,
-        time: selectedTime,
-      }),
+    const res = await createAppointment({
+      fullname,
+      serviceName: service,
+      barberName: barber,
+      date: date || new Date(),
+      time: selectedTime,
     });
 
-    if (res.ok) {
-      toast("Appointment was created successfuly", {
-        description: `${formatAppointmentDate(date || new Date())} at ${selectedTime}`,
+    if (res.status === 201) {
+      toast("Appointment was created successfully", {
+        description: `${formatAppointmentDate(
+          date || new Date()
+        )} at ${selectedTime}`,
       });
     }
     redirect("/bookings");
@@ -131,7 +131,11 @@ export default function Page() {
                   key={time}
                   type="button"
                   onClick={() => setSelectedTime(time)}
-                  className={`p-2 text-sm rounded-md ${selectedTime === time ? "bg-gray-900 text-white" : "bg-gray-100 hover:bg-gray-200"}`}
+                  className={`p-2 text-sm rounded-md ${
+                    selectedTime === time
+                      ? "bg-gray-900 text-white"
+                      : "bg-gray-100 hover:bg-gray-200"
+                  }`}
                 >
                   {time}
                 </button>

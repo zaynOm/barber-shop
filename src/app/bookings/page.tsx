@@ -10,18 +10,19 @@ import {
 import { formatToUsDate } from "@/lib/utils";
 import { AppointmentType } from "@/types";
 import { useEffect, useState } from "react";
+import { fetchAppointments } from "./new/actions";
 
 export default function Page() {
   const [appointments, setAppointments] = useState<AppointmentType[]>([]);
 
-  const fetchAppointments = async () => {
-    const res = await fetch("/api/appointments");
-    const data = await res.json();
-    setAppointments(data.data);
-  };
-
   useEffect(() => {
-    fetchAppointments();
+    fetchAppointments().then((result) => {
+      if (result.status === 200) {
+        setAppointments(result.data as AppointmentType[]);
+      } else {
+        console.error(result.error);
+      }
+    });
   }, []);
 
   return (
@@ -43,7 +44,9 @@ export default function Page() {
                 <TableCell>{item.fullname}</TableCell>
                 <TableCell>{item.serviceName}</TableCell>
                 <TableCell>{item.barberName}</TableCell>
-                <TableCell>{`${formatToUsDate(item.date)} ${item.time}`}</TableCell>
+                <TableCell>{`${formatToUsDate(item.date)} ${
+                  item.time
+                }`}</TableCell>
               </TableRow>
             ))}
           </TableBody>
