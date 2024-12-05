@@ -19,7 +19,6 @@ import { formatAppointmentDate } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
-import { createAppointment } from "./actions";
 
 export default function Page() {
   const [fullname, setFullname] = useState("");
@@ -30,15 +29,18 @@ export default function Page() {
 
   async function onFormSubmit(e: FormEvent) {
     e.preventDefault();
-    const res = await createAppointment({
-      fullname,
-      serviceName: service,
-      barberName: barber,
-      date: date || new Date(),
-      time: selectedTime,
+    const res = await fetch("/api/appointments", {
+      method: "POST",
+      body: JSON.stringify({
+        fullname,
+        serviceName: service,
+        barberName: barber,
+        date,
+        time: selectedTime,
+      }),
     });
 
-    if (res.status === 201) {
+    if (res.ok) {
       toast("Appointment was created successfully", {
         description: `${formatAppointmentDate(
           date || new Date()

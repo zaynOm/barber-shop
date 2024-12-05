@@ -1,5 +1,3 @@
-"use server";
-
 import dbConnect from "@/lib/db";
 import Appointment from "@/lib/schemas";
 import { AppointmentType } from "@/types";
@@ -8,7 +6,7 @@ import { AppointmentType } from "@/types";
 export async function fetchAppointments() {
   try {
     await dbConnect();
-    const appointments = await Appointment.find({}).lean();
+    const appointments = await Appointment.find({});
     return { data: appointments, status: 200 };
   } catch (_) {
     return {
